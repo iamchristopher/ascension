@@ -1,3 +1,7 @@
 [submodule "ui"]
 	path = ui
 	url = git@github.com:iamchristopher/ascension-ui.git
+[submodule "client"]
+	path = client
+	url = git@github.com:iamchristopher/ascension-client.git
+	branch = dev
