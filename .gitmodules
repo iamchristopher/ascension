@@ -1,6 +1,7 @@
 [submodule "ui"]
 	path = ui
 	url = git@github.com:iamchristopher/ascension-ui.git
+    branch = rebuild
 [submodule "client"]
 	path = client
 	url = git@github.com:iamchristopher/ascension-client.git
