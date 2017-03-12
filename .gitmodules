@@ -6,3 +6,9 @@
 	path = client
 	url = git@github.com:iamchristopher/ascension-client.git
 	branch = dev
+[submodule "server"]
+	path = server
+	url = git@github.com:iamchristopher/ascension-server.git
+[submodule "api"]
+	path = api
+	url = git@github.com:iamchristopher/ascension-api.git
