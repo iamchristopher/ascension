@@ -1,0 +1,31 @@
+{
+    "env": {
+        "server": {
+            "presets": [
+                "es2015",
+                "stage-1"
+            ]
+        },
+        "client": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "modules": false
+                    }
+                ]
+            ],
+            "plugins": [
+                "external-helpers",
+                "transform-object-rest-spread",
+                "transform-class-properties"
+            ]
+        },
+        "canvas": {
+            "presets": [
+                "stage-1",
+                "es2015-rollup"
+            ]
+        }
+    }
+}
