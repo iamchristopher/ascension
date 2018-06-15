@@ -42,6 +42,9 @@ export default {
         },
         attack (G, ctx, attackerID, defenderID) {
             const defender = G.players[defenderID];
+            const newHealth = defender.currentHealth - 10 <= 0
+                ?   0
+                :   defender.currentHealth - 10;
 
             return {
                 ...G,
@@ -49,7 +52,7 @@ export default {
                     ...G.players,
                     [defenderID]: {
                         ...defender,
-                        currentHealth: defender.currentHealth - 10
+                        currentHealth: newHealth
                     }
                 }
             };
