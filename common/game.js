@@ -1,5 +1,5 @@
 import moves from './moves';
-
+console.log(moves);
 const players = {
     736657283125056: {
         name: 'One',
@@ -54,7 +54,7 @@ export default {
                 name: 'Action',
                 allowedMoves: [ 'movePawn', 'attack' ],
                 onPhaseBegin (G, ctx) {
-                    console.log('begin action');
+                    console.log('begin action??x');
                     return G;
                 },
                 onPhaseEnd (G, ctx) {

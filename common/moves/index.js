@@ -1,9 +1,9 @@
-import attack from './attack';
-import heal from './heal';
-import move from './move';
+import attackPawn from './attack';
+import healPawn from './heal';
+import movePawn from './move';
 
 export default {
-    attack,
-    heal,
-    move
+    attackPawn,
+    healPawn,
+    movePawn
 };
