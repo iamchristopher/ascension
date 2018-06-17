@@ -1,3 +1,5 @@
+import moves from './moves';
+
 const players = {
     736657283125056: {
         name: 'One',
@@ -24,43 +26,30 @@ export default {
     setup: () => ({
         players
     }),
-    moves: {
-        movePawn: (G, ctx, id, position) => {
-            const currentPlayer = G.players[ctx.currentPlayer];
-
-            return {
-                ...G,
-                players: {
-                    ...G.players,
-                    [ctx.currentPlayer]: {
-                        ...currentPlayer,
-                        actions: currentPlayer.actions - 1,
-                        position
-                    }
-                }
-            };
-        },
-        attack (G, ctx, attackerID, defenderID) {
-            const defender = G.players[defenderID];
-            const newHealth = defender.currentHealth - 10 <= 0
-                ?   0
-                :   defender.currentHealth - 10;
-
-            return {
-                ...G,
-                players: {
-                    ...G.players,
-                    [defenderID]: {
-                        ...defender,
-                        currentHealth: newHealth
-                    }
-                }
-            };
-        }
-    },
+    moves,
     flow: {
         movesPerTurn: 2,
         phases: [
+            // {
+            //     name: 'Activation',
+            //     allowedMoves: [ 'heal' ],
+            //     onPhaseBegin (G, ctx) {
+            //         console.log('begin activation');
+            //         return G;
+            //     },
+            //     onPhaseEnd (G, ctx) {
+            //         console.log('end activation');
+            //         return G;
+            //     },
+            //     endPhaseIf () {
+            //         console.log('end?');
+            //         return true;
+            //     },
+            //     onMove (G) {
+            //     console.log(G);
+            //         return G;
+            //     }
+            // },
             {
                 name: 'Action',
                 allowedMoves: [ 'movePawn', 'attack' ],
@@ -74,7 +63,7 @@ export default {
                 },
                 endPhaseIf () {
                     console.log('end?');
-                    return true;
+                    // return true;
                 }
             }
         ],
