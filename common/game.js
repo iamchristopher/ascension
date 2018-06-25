@@ -9,7 +9,8 @@ const players = {
             x: 50,
             y: 50
         },
-        speed: 5
+        speed: 5,
+        activations: 0
     },
     2097982960243625: {
         name: 'Two',
@@ -19,7 +20,8 @@ const players = {
             x: 100,
             y: 50
         },
-        speed: 5
+        speed: 5,
+        activations: 0
     }
 };
 
@@ -30,7 +32,28 @@ export default {
     }),
     moves,
     flow: {
+        onTurnEnd (G, ctx) {
+            return modifyPlayer(G, ctx.currentPlayer, {
+                activations: 0
+            });
+        },
         phases: [
+            {
+                name: 'Activation',
+                allowedMoves: [],
+                onPhaseEnd (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        activations: currentPlayer.activations + 1
+                    });
+                },
+                endTurnIf (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return currentPlayer.activations >= 2;
+                }
+            },
             {
                 name: 'Movement',
                 allowedMoves: [ 'movePawn' ],
@@ -59,14 +82,6 @@ export default {
                     });
                 }
             },
-            {
-                name: 'Activation',
-                allowedMoves: [],
-                onPhaseBegin (G, ctx) {
-                    console.log('Activation');
-                    return G;
-                }
-            }
         ],
         playOrder: Object.keys(players)
     }
