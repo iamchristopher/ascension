@@ -7,7 +7,6 @@ export default function (G, ctx, id, position) {
             ...G.players,
             [ctx.currentPlayer]: {
                 ...currentPlayer,
-                actions: currentPlayer.actions - 1,
                 position
             }
         }

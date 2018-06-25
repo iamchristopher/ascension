@@ -1,5 +1,5 @@
 import moves from './moves';
-console.log(moves);
+
 const players = {
     736657283125056: {
         name: 'One',
@@ -8,7 +8,8 @@ const players = {
         position: {
             x: 50,
             y: 50
-        }
+        },
+        speed: 5
     },
     2097982960243625: {
         name: 'Two',
@@ -17,7 +18,8 @@ const players = {
         position: {
             x: 100,
             y: 50
-        }
+        },
+        speed: 5
     }
 };
 
@@ -28,64 +30,55 @@ export default {
     }),
     moves,
     flow: {
-        movesPerTurn: 2,
         phases: [
-            // {
-            //     name: 'Activation',
-            //     allowedMoves: [ 'heal' ],
-            //     onPhaseBegin (G, ctx) {
-            //         console.log('begin activation');
-            //         return G;
-            //     },
-            //     onPhaseEnd (G, ctx) {
-            //         console.log('end activation');
-            //         return G;
-            //     },
-            //     endPhaseIf () {
-            //         console.log('end?');
-            //         return true;
-            //     },
-            //     onMove (G) {
-            //     console.log(G);
-            //         return G;
-            //     }
-            // },
             {
-                name: 'Action',
-                allowedMoves: [ 'movePawn', 'attack' ],
+                name: 'Movement',
+                allowedMoves: [ 'movePawn' ],
                 onPhaseBegin (G, ctx) {
-                    console.log('begin action??x');
-                    return G;
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: currentPlayer.speed
+                    });
+                },
+                onMove (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: currentPlayer.actions - 1
+                    });
+                },
+                endPhaseIf (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return currentPlayer.actions <= 0 && 'Activation';
                 },
                 onPhaseEnd (G, ctx) {
-                    console.log('end action');
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: 0
+                    });
+                }
+            },
+            {
+                name: 'Activation',
+                allowedMoves: [],
+                onPhaseBegin (G, ctx) {
+                    console.log('Activation');
                     return G;
-                },
-                endPhaseIf () {
-                    console.log('end?');
-                    // return true;
                 }
             }
         ],
-        onTurnBegin (G, ctx) {
-            const currentPlayer = G.players[ctx.currentPlayer];
-
-            return {
-                ...G,
-                players: {
-                    ...G.players,
-                    [ctx.currentPlayer]: {
-                        ...currentPlayer,
-                        actions: 99
-                    }
-                }
-            };
-        },
-        endTurnIf (G, ctx) {
-            const currentPlayer = G.players[ctx.currentPlayer];
-
-            return currentPlayer.actions <= 0;
-        },
         playOrder: Object.keys(players)
     }
 };
+
+const modifyPlayer = (G, id, props) => ({
+    ...G,
+    players: {
+        ...G.players,
+        [id]: {
+            ...G.players[id],
+            ...props
+        }
+    }
+});
