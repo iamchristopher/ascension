@@ -87,6 +87,37 @@ export default {
                     });
                 }
             },
+            {
+                name: 'Attack',
+                allowedMoves: [ 'attackPawn' ],
+                onPhaseBegin (G, ctx) {
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: 1
+                    });
+                },
+                onMove (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: currentPlayer.actions - 1
+                    });
+                },
+                endPhaseIf (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return currentPlayer.actions <= 0 && 'Activation';
+                },
+                onPhaseEnd (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
+                    return modifyPlayer(G, ctx.currentPlayer, {
+                        actions: 0,
+                        activations: currentPlayer.actions === 1
+                            ?   currentPlayer.activations - 1
+                            :   currentPlayer.activations
+                    });
+                }
+            }
         ],
         playOrder: Object.keys(players)
     }
