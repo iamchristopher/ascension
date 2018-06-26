@@ -77,8 +77,13 @@ export default {
                     return currentPlayer.actions <= 0 && 'Activation';
                 },
                 onPhaseEnd (G, ctx) {
+                    const currentPlayer = G.players[ctx.currentPlayer];
+
                     return modifyPlayer(G, ctx.currentPlayer, {
-                        actions: 0
+                        actions: 0,
+                        activations: currentPlayer.actions === currentPlayer.speed
+                            ?   currentPlayer.activations - 1
+                            :   currentPlayer.activations
                     });
                 }
             },
