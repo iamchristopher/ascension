@@ -25,10 +25,50 @@ const players = {
     }
 };
 
+const pawns = {
+    1: {
+        owner: 736657283125056,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 50,
+            y: 50
+        },
+        speed: 5,
+        activations: 0,
+        active: false
+    },
+    2: {
+        owner: 2097982960243625,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 250,
+            y: 50
+        },
+        speed: 5,
+        activations: 0,
+        active: false
+    },
+    3: {
+        owner: 736657283125056,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 250,
+            y: 200
+        },
+        speed: 5,
+        activations: 0,
+        active: true
+    }
+};
+
 export default {
     name: 'ascension',
     setup: () => ({
-        players
+        players,
+        pawns
     }),
     moves,
     flow: {
