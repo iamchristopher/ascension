@@ -1,14 +1,9 @@
-export default function (G, ctx, id, position) {
-    const currentPlayer = G.players[ctx.currentPlayer];
+import {
+    modifyPawn
+} from '../util';
 
-    return {
-        ...G,
-        players: {
-            ...G.players,
-            [ctx.currentPlayer]: {
-                ...currentPlayer,
-                position
-            }
-        }
-    };
+export default function (G, ctx, id, position) {
+    return modifyPawn(G, id, {
+        position
+    });
 }
