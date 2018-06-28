@@ -2,8 +2,8 @@ import {
     modifyPawn
 } from '../util';
 
-export default function (G, ctx, id, position) {
+export default function (G, ctx, id) {
     return modifyPawn(G, id, {
-        position
+        active: true
     });
 }

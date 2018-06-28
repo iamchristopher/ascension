@@ -1,4 +1,10 @@
 import moves from './moves';
+import {
+    findActivePawn,
+    modifyPawn,
+    modifyPlayer,
+    restorePawns
+} from './util';
 
 const players = {
     736657283125056: {
@@ -25,65 +31,146 @@ const players = {
     }
 };
 
+const pawns = {
+    1: {
+        owner: 736657283125056,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 50,
+            y: 50
+        },
+        speed: 1,
+        activations: 0,
+        active: false,
+        exhausted: false
+    },
+    2: {
+        owner: 2097982960243625,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 250,
+            y: 50
+        },
+        speed: 1,
+        activations: 0,
+        active: false,
+        exhausted: false
+    },
+    3: {
+        owner: 2097982960243625,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 100,
+            y: 200
+        },
+        speed: 1,
+        activations: 0,
+        active: false,
+        exhausted: false
+    },
+    4: {
+        owner: 2097982960243625,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 300,
+            y: 200
+        },
+        speed: 1,
+        activations: 0,
+        active: false,
+        exhausted: false
+    }
+};
+
 export default {
     name: 'ascension',
     setup: () => ({
-        players
+        players,
+        pawns
     }),
     moves,
     flow: {
-        onTurnEnd (G, ctx) {
-            return modifyPlayer(G, ctx.currentPlayer, {
-                activations: 0
-            });
+        onTurnBegin (G, ctx) {
+            return {
+                ...G,
+                pawns: restorePawns(ctx.currentPlayer, G.pawns)
+            };
         },
         phases: [
+            {
+                name: 'Restoration',
+                allowedMoves: [ 'activatePawn' ],
+                endPhaseIf (G, ctx) {
+                    return Object
+                        .values(G.pawns)
+                        .some(({ active }) => active) && 'Activation';
+                },
+                endTurnIf (G, ctx) {
+                    return !Object
+                        .values(G.pawns)
+                        .filter(({ owner }) => owner == ctx.currentPlayer)
+                        .some(({ exhausted }) => !exhausted);
+                }
+            },
             {
                 name: 'Activation',
                 allowedMoves: [],
                 onPhaseEnd (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
+                    const activations = pawn.activations + 1;
 
-                    return modifyPlayer(G, ctx.currentPlayer, {
-                        activations: currentPlayer.activations + 1
+                    return modifyPawn(G, pawnId, {
+                        activations,
+                        active: activations <= 2,
+                        exhausted: activations >= 2
                     });
                 },
-                endTurnIf (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                endPhaseIf (G, ctx) {
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
 
-                    return currentPlayer.activations >= 2;
+                    return pawn.exhausted && 'Restoration';
                 }
             },
             {
                 name: 'Movement',
                 allowedMoves: [ 'movePawn' ],
                 onPhaseBegin (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
 
-                    return modifyPlayer(G, ctx.currentPlayer, {
-                        actions: currentPlayer.speed
+                    return modifyPawn(G, pawnId, {
+                        actions: pawn.speed
                     });
                 },
                 onMove (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
 
-                    return modifyPlayer(G, ctx.currentPlayer, {
-                        actions: currentPlayer.actions - 1
+                    return modifyPawn(G, pawnId, {
+                        actions: pawn.actions - 1
                     });
                 },
                 endPhaseIf (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
 
-                    return currentPlayer.actions <= 0 && 'Activation';
+                    return pawn.actions <= 0 && 'Activation';
                 },
                 onPhaseEnd (G, ctx) {
-                    const currentPlayer = G.players[ctx.currentPlayer];
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
 
-                    return modifyPlayer(G, ctx.currentPlayer, {
+                    return modifyPawn(G, pawnId, {
                         actions: 0,
-                        activations: currentPlayer.actions === currentPlayer.speed
-                            ?   currentPlayer.activations - 1
-                            :   currentPlayer.activations
+                        activations: pawn.actions === pawn.speed
+                            ?   pawn.activations - 1
+                            :   pawn.activations
                     });
                 }
             },
@@ -122,14 +209,3 @@ export default {
         playOrder: Object.keys(players)
     }
 };
-
-const modifyPlayer = (G, id, props) => ({
-    ...G,
-    players: {
-        ...G.players,
-        [id]: {
-            ...G.players[id],
-            ...props
-        }
-    }
-});
