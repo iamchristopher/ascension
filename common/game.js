@@ -119,6 +119,14 @@ export default {
             {
                 name: 'Activation',
                 allowedMoves: [],
+                onPhaseBegin (G, ctx) {
+                    const pawnId = findActivePawn(G.pawns);
+                    const pawn = G.pawns[pawnId];
+
+                    return modifyPawn(G, pawnId, {
+                        exhausted: pawn.activations >= 2
+                    });
+                },
                 onPhaseEnd (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
@@ -126,8 +134,7 @@ export default {
 
                     return modifyPawn(G, pawnId, {
                         activations,
-                        active: activations <= 2,
-                        exhausted: activations >= 2
+                        active: activations <= 2
                     });
                 },
                 endPhaseIf (G, ctx) {
