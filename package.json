@@ -24,5 +24,8 @@
     "babel-preset-stage-1": "6.24.1",
     "boardgame.io": "0.22.1",
     "http-server": "0.11.1"
+  },
+  "dependencies": {
+    "trekker": "1.0.0-alpha01"
   }
 }
