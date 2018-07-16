@@ -8,26 +8,10 @@ import {
 
 const players = {
     736657283125056: {
-        name: 'One',
-        maxHealth: 50,
-        currentHealth: 50,
-        position: {
-            x: 50,
-            y: 50
-        },
-        speed: 5,
-        activations: 0
+        name: 'One'
     },
     2097982960243625: {
-        name: 'Two',
-        maxHealth: 50,
-        currentHealth: 50,
-        position: {
-            x: 100,
-            y: 50
-        },
-        speed: 5,
-        activations: 0
+        name: 'Two'
     }
 };
 
@@ -37,10 +21,10 @@ const pawns = {
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 50,
-            y: 50
+            x: 200,
+            y: 200
         },
-        speed: 1,
+        speed: 12,
         activations: 0,
         active: false,
         exhausted: false
@@ -50,47 +34,28 @@ const pawns = {
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 250,
+            x: 350,
             y: 50
         },
-        speed: 1,
+        speed: 4,
         activations: 0,
         active: false,
         exhausted: false
     },
-    3: {
-        owner: 2097982960243625,
-        maxHealth: 50,
-        currentHealth: 50,
-        position: {
-            x: 100,
-            y: 200
-        },
-        speed: 1,
-        activations: 0,
-        active: false,
-        exhausted: false
-    },
-    4: {
-        owner: 2097982960243625,
-        maxHealth: 50,
-        currentHealth: 50,
-        position: {
-            x: 300,
-            y: 200
-        },
-        speed: 1,
-        activations: 0,
-        active: false,
-        exhausted: false
-    }
 };
 
-export default {
+export default ({
+    map = [],
+    blocked = [],
+    interactions = []
+} = {}) => ({
     name: 'ascension',
     setup: () => ({
         players,
-        pawns
+        pawns,
+        map,
+        blocked,
+        interactions
     }),
     moves,
     flow: {
