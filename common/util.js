@@ -39,3 +39,11 @@ export const restorePawns = (playerId, pawns) => Object
                 :   pawn.activations
         }
     }), {});
+
+export const chunkMapData = (data, size = 10) => Array(Math.ceil(data.length / size))
+    .fill()
+    .map((_, i) => data
+        .slice(i * size, size * (i + 1))
+        // .map(s => Number(s > 0))
+        .map(i => i - 1)
+    );

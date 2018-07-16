@@ -44,11 +44,18 @@ const pawns = {
     },
 };
 
-export default {
+export default ({
+    map = [],
+    blocked = [],
+    interactions = []
+} = {}) => ({
     name: 'ascension',
     setup: () => ({
         players,
-        pawns
+        pawns,
+        map,
+        blocked,
+        interactions
     }),
     moves,
     flow: {
