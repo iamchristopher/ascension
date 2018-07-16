@@ -26,6 +26,7 @@
     "http-server": "0.11.1"
   },
   "dependencies": {
+    "phaser": "3.11.0",
     "trekker": "1.0.0-alpha01"
   }
 }
