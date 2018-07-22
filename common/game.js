@@ -218,6 +218,7 @@ export default ({
                 }
             }
         ],
-        playOrder: Object.keys(players)
+        playOrder: Object.keys(players),
+        optimisticUpdate: () => false
     }
-};
+});
