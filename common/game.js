@@ -2,7 +2,6 @@ import moves from './moves';
 import {
     findActivePawn,
     modifyPawn,
-    modifyPlayer,
     restorePawns
 } from './util';
 
@@ -184,7 +183,7 @@ export default ({
             },
             {
                 name: 'Search',
-                allowedMoves: [],
+                allowedMoves: [ 'searchSpace' ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
 
@@ -219,6 +218,7 @@ export default ({
                 }
             }
         ],
-        playOrder: Object.keys(players)
+        playOrder: Object.keys(players),
+        optimisticUpdate: () => false
     }
-};
+});
