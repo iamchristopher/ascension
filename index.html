@@ -6,14 +6,13 @@
     <title>Ascension</title>
     <style>
     body {
-	    background: url('/client/source/assets/scene/stars.jpg');
         margin: 0;
         padding: 0;
     }
     </style>
 </head>
 <body>
-    <script src="https://connect.facebook.net/en_US/fbinstant.6.0.js"></script>
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.2.js"></script>
     <script>
         window.fbAsyncInit = function() {
             FB.init({
@@ -33,7 +32,7 @@
         }(document, 'script', 'facebook-jssdk'));
     </script>
     <div id="app"></div>
-    <script src="/node_modules/phaser/dist/phaser.js"></script>
+    <script src="https://labs.phaser.io/build/dev.js"></script>
     <script src="/client/source/vendor/astar.js"></script>
     <script src="/client/bundle.js"></script>
 </body>
