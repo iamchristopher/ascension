@@ -6,17 +6,17 @@ import {
 } from './util';
 
 const players = {
-    736657283125056: {
+    0: {
         name: 'One'
     },
-    2097982960243625: {
+    1: {
         name: 'Two'
     }
 };
 
 const pawns = {
     1: {
-        owner: 736657283125056,
+        owner: 0,
         maxHealth: 50,
         currentHealth: 50,
         position: {
@@ -29,7 +29,7 @@ const pawns = {
         exhausted: false
     },
     2: {
-        owner: 2097982960243625,
+        owner: 1,
         maxHealth: 50,
         currentHealth: 50,
         position: {
@@ -218,7 +218,6 @@ export default ({
                 }
             }
         ],
-        playOrder: Object.keys(players),
         optimisticUpdate: () => false
     }
 });
