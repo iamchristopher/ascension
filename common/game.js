@@ -20,10 +20,10 @@ const pawns = {
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 200,
-            y: 200
+            x: 100,
+            y: 150
         },
-        speed: 12,
+        speed: 4,
         activations: 0,
         active: false,
         exhausted: false
@@ -33,8 +33,34 @@ const pawns = {
         maxHealth: 50,
         currentHealth: 50,
         position: {
+            x: 400,
+            y: 350
+        },
+        speed: 4,
+        activations: 0,
+        active: false,
+        exhausted: false
+    },
+    3: {
+        owner: 0,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
+            x: 100,
+            y: 300
+        },
+        speed: 4,
+        activations: 0,
+        active: false,
+        exhausted: false
+    },
+    4: {
+        owner: 1,
+        maxHealth: 50,
+        currentHealth: 50,
+        position: {
             x: 350,
-            y: 50
+            y: 200
         },
         speed: 4,
         activations: 0,
