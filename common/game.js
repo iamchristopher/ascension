@@ -84,6 +84,24 @@ export default ({
     }),
     moves,
     flow: {
+        endGameIf (G, ctx) {
+            const validPlayerIds = Object.keys(G.players)
+                .filter(playerId =>
+                    Object.keys(G.pawns)
+                        .map(pawnId => G.pawns[pawnId])
+                        .filter(pawn => pawn.owner == playerId)
+                        .filter(pawn => pawn.currentHealth > 0)
+                        .length > 0
+                );
+
+            if (validPlayerIds.length > 1) {
+                return;
+            }
+
+            return {
+                winner: validPlayerIds[0]
+            };
+        },
         onTurnBegin (G, ctx) {
             return {
                 ...G,
