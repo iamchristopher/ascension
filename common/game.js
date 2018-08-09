@@ -26,7 +26,8 @@ const pawns = {
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {}
     },
     2: {
         owner: 1,
@@ -39,7 +40,8 @@ const pawns = {
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {}
     },
     3: {
         owner: 0,
@@ -52,7 +54,8 @@ const pawns = {
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {}
     },
     4: {
         owner: 1,

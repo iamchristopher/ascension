@@ -1,8 +1,20 @@
 import {
-    findActivePawn
+    findActivePawn,
+    modifyPawn
 } from '../util';
+import {
+    get as getItem
+} from '../data/items';
 
 import Trekker from 'trekker';
+import {
+    LootTable
+} from 'lootastic';
+
+const lootTable = new LootTable([
+    { chance: 1, result: getItem(1) },
+    { chance: 1, result: getItem(2) },
+]);
 
 export default function (G, ctx, pos) {
     const pawnId = findActivePawn(G.pawns);
@@ -19,5 +31,20 @@ export default function (G, ctx, pos) {
         return;
     }
 
-    return G;
+    const [{
+        id
+    }] = lootTable.chooseWithReplacement(1);
+    const {
+        inventory: {
+            [id]: currentItemQuantity = 0,
+            ...inventory
+        } = {}
+    } = pawn;
+
+    return modifyPawn(G, pawnId, {
+        inventory: {
+            ...inventory,
+            [id]: currentItemQuantity + 1
+        }
+    });
 }
