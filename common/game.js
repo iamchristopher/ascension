@@ -262,6 +262,6 @@ export default ({
                 }
             }
         ],
-        optimisticUpdate: () => false
+        optimisticUpdate: () => true
     }
 });
