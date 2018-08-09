@@ -121,7 +121,7 @@ export default ({
                     return !Object
                         .values(G.pawns)
                         .filter(({ owner }) => owner == ctx.currentPlayer)
-                        .some(({ exhausted }) => !exhausted);
+                        .some(({ exhausted, currentHealth }) => !exhausted && currentHealth > 0);
                 }
             },
             {
