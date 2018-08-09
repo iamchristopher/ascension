@@ -7,10 +7,12 @@ import {
 
 const players = {
     0: {
-        name: 'One'
+        name: 'One',
+        gold: 0
     },
     1: {
-        name: 'Two'
+        name: 'Two',
+        gold: 0
     }
 };
 
@@ -68,7 +70,8 @@ const pawns = {
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {}
     },
 };
 
