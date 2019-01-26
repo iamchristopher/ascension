@@ -5,6 +5,14 @@ import {
     restorePawns
 } from './util';
 
+const PHASES = {
+    ACTIVATION: 'Activation',
+    ATTACK: 'Attack',
+    MOVEMENT: 'Movement',
+    RESTORATION: 'Restoration',
+    SEARCH: 'Search',
+}
+
 const players = {
     0: {
         name: 'One'
@@ -20,52 +28,56 @@ const pawns = {
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 100,
-            y: 150
+            x: 700,
+            y: 700
         },
-        speed: 4,
+        speed: 1,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {},
     },
     2: {
         owner: 1,
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 400,
-            y: 350
+            x: 700,
+            y: 800
         },
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {},
     },
     3: {
         owner: 0,
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 100,
-            y: 300
+            x: 800,
+            y: 700
         },
-        speed: 4,
+        speed: 20,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {},
     },
     4: {
         owner: 1,
         maxHealth: 50,
         currentHealth: 50,
         position: {
-            x: 350,
-            y: 200
+            x: 800,
+            y: 800
         },
         speed: 4,
         activations: 0,
         active: false,
-        exhausted: false
+        exhausted: false,
+        inventory: {},
     },
 };
 
@@ -108,24 +120,29 @@ export default ({
                 pawns: restorePawns(ctx.currentPlayer, G.pawns)
             };
         },
-        phases: [
-            {
-                name: 'Restoration',
+        startingPhase: PHASES.RESTORATION,
+        phases: {
+            [PHASES.RESTORATION]: {
                 allowedMoves: [ 'activatePawn' ],
                 endPhaseIf (G, ctx) {
-                    return Object
+                    const activePawn = Object
                         .values(G.pawns)
-                        .some(({ active }) => active) && 'Activation';
+                        .some(({ active }) => active);
+
+                    if (activePawn) {
+                        return {
+                            next: PHASES.ACTIVATION,
+                        };
+                    }
                 },
                 endTurnIf (G, ctx) {
                     return !Object
                         .values(G.pawns)
                         .filter(({ owner }) => owner == ctx.currentPlayer)
-                        .some(({ exhausted, currentHealth }) => !exhausted && currentHealth > 0);
-                }
+                        .some(({ exhausted }) => !exhausted);
+                },
             },
-            {
-                name: 'Activation',
+            [PHASES.ACTIVATION]: {
                 allowedMoves: [],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
@@ -149,11 +166,14 @@ export default ({
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
 
-                    return pawn.exhausted && 'Restoration';
-                }
+                    if (pawn.exhausted) {
+                        return {
+                            next: PHASES.RESTORATION,
+                        };
+                    }
+                },
             },
-            {
-                name: 'Movement',
+            [PHASES.MOVEMENT]: {
                 allowedMoves: [ 'movePawn' ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
@@ -175,7 +195,11 @@ export default ({
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
 
-                    return pawn.actions <= 0 && 'Activation';
+                    if (pawn.actions <= 0) {
+                        return {
+                            next: PHASES.ACTIVATION,
+                        };
+                    }
                 },
                 onPhaseEnd (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
@@ -187,10 +211,9 @@ export default ({
                             ?   pawn.activations - 1
                             :   pawn.activations
                     });
-                }
+                },
             },
-            {
-                name: 'Attack',
+            [PHASES.ATTACK]: {
                 allowedMoves: [ 'attackPawn' ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
@@ -223,9 +246,10 @@ export default ({
                             ?   pawn.activations - 1
                             :   pawn.activations
                     });
-                }
+                },
+                next: PHASES.ACTIVATION,
             },
-            {
+            [PHASES.SEARCH]: {
                 name: 'Search',
                 allowedMoves: [ 'searchSpace' ],
                 onPhaseBegin (G, ctx) {
@@ -259,9 +283,10 @@ export default ({
                             ?   pawn.activations - 1
                             :   pawn.activations
                     });
-                }
-            }
-        ],
-        optimisticUpdate: () => true
+                },
+                next: PHASES.ACTIVATION,
+            },
+        },
+        optimisticUpdate: () => false
     }
 });
