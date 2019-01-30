@@ -234,7 +234,11 @@ export default ({
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
 
-                    return pawn.actions <= 0 && 'Activation';
+                    if (pawn.actions <= 0) {
+                        return {
+                            next: 'Activation',
+                        };
+                    }
                 },
                 onPhaseEnd (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
@@ -271,7 +275,11 @@ export default ({
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
 
-                    return pawn.actions <= 0 && 'Activation';
+                    if (pawn.actions <= 0) {
+                        return {
+                            next: 'Activation',
+                        };
+                    }
                 },
                 onPhaseEnd (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
