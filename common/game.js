@@ -5,6 +5,8 @@ import {
     restorePawns
 } from './util';
 
+const MAX_ACTIVATIONS = 5;
+
 const PHASES = {
     ACTIVATION: 'Activation',
     ATTACK: 'Attack',
@@ -149,7 +151,7 @@ export default ({
                     const pawn = G.pawns[pawnId];
 
                     return modifyPawn(G, pawnId, {
-                        exhausted: pawn.activations >= 2
+                        exhausted: pawn.activations >= MAX_ACTIVATIONS
                     });
                 },
                 onPhaseEnd (G, ctx) {
@@ -159,7 +161,7 @@ export default ({
 
                     return modifyPawn(G, pawnId, {
                         activations,
-                        active: activations <= 2
+                        active: activations <= MAX_ACTIVATIONS,
                     });
                 },
                 endPhaseIf (G, ctx) {
