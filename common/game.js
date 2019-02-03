@@ -1,3 +1,5 @@
+import * as MOVES from './constants/moves';
+import * as PHASES from './constants/phases';
 import moves from './moves';
 import {
     findActivePawn,
@@ -5,15 +7,7 @@ import {
     restorePawns
 } from './util';
 
-const MAX_ACTIVATIONS = 5;
-
-const PHASES = {
-    ACTIVATION: 'Activation',
-    ATTACK: 'Attack',
-    MOVEMENT: 'Movement',
-    RESTORATION: 'Restoration',
-    SEARCH: 'Search',
-}
+const MAX_ACTIVATIONS = 2;
 
 const players = {
     0: {
@@ -125,7 +119,7 @@ export default ({
         startingPhase: PHASES.RESTORATION,
         phases: {
             [PHASES.RESTORATION]: {
-                allowedMoves: [ 'activatePawn' ],
+                allowedMoves: [ MOVES.ACTIVATE ],
                 endPhaseIf (G, ctx) {
                     const activePawn = Object
                         .values(G.pawns)
@@ -176,7 +170,7 @@ export default ({
                 },
             },
             [PHASES.MOVEMENT]: {
-                allowedMoves: [ 'movePawn' ],
+                allowedMoves: [ MOVES.MOVE, MOVES.CANCEL ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
                     const pawn = G.pawns[pawnId];
@@ -216,7 +210,7 @@ export default ({
                 },
             },
             [PHASES.ATTACK]: {
-                allowedMoves: [ 'attackPawn' ],
+                allowedMoves: [ MOVES.ATTACK ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
 
@@ -238,7 +232,7 @@ export default ({
 
                     if (pawn.actions <= 0) {
                         return {
-                            next: 'Activation',
+                            next: PHASES.ACTIVATION,
                         };
                     }
                 },
@@ -256,8 +250,7 @@ export default ({
                 next: PHASES.ACTIVATION,
             },
             [PHASES.SEARCH]: {
-                name: 'Search',
-                allowedMoves: [ 'searchSpace' ],
+                allowedMoves: [ MOVES.SEARCH ],
                 onPhaseBegin (G, ctx) {
                     const pawnId = findActivePawn(G.pawns);
 
@@ -279,7 +272,7 @@ export default ({
 
                     if (pawn.actions <= 0) {
                         return {
-                            next: 'Activation',
+                            next: PHASES.ACTIVATION,
                         };
                     }
                 },

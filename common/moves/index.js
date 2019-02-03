@@ -1,13 +1,15 @@
-import activatePawn from './activate';
-import attackPawn from './attack';
-import healPawn from './heal';
-import movePawn from './move';
-import searchSpace from './search';
+import * as MOVES from '../constants/moves';
+
+import activate from './activate';
+import attack from './attack';
+import heal from './heal';
+import move from './move';
+import search from './search';
 
 export default {
-    activatePawn,
-    attackPawn,
-    healPawn,
-    movePawn,
-    searchSpace
+    [MOVES.ACTIVATE]: activate,
+    [MOVES.ATTACK]: attack,
+    [MOVES.HEAL]: heal,
+    [MOVES.MOVE]: move,
+    [MOVES.SEARCH]: search,
 };
