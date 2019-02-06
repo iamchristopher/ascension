@@ -7,10 +7,14 @@ export default function (G, ctx, { x = 0, y = 0 }) {
         x + width >= tagX &&
         y + height >= tagY
     ));
+
+    if (roomId === -1) {
+        return 'INVALID_MOVE';
+    }
+
     const room = G.map.rooms[roomId];
     const xOffset = tagX - room.x;
     const yOffset = tagY - room.y;
-    const tile = room.tiles[yOffset][xOffset];
 
     const tag = {
         type: 'EFFECT_CARD',
