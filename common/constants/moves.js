@@ -4,3 +4,4 @@ export const CANCEL = 'cancel';
 export const HEAL = 'heal';
 export const MOVE = 'move';
 export const SEARCH = 'search';
+export const TAG = 'tag';
