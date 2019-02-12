@@ -12,9 +12,17 @@ export default function (G, ctx, id, position) {
         y + height >= tileY
     ));
     const room = G.map.rooms[roomId];
-    const tile = room.tiles[tileY - room.y][tileX - room.x];
+    const {
+        tiles: {
+            [tileY - room.y]: {
+                [tileX - room.x]: {
+                    tags = [],
+                } = [],
+            } = [],
+        } = [],
+    } = room;
 
-    if (tile.tags.length > 0) {
+    if (tags.length > 0) {
         ctx.events.endPhase();
 
         return modifyPawn(G, id, {
