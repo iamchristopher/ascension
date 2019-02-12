@@ -20,7 +20,7 @@ const players = {
 };
 
 const pawns = {
-    1: {
+    a: {
         owner: 0,
         maxHealth: 50,
         currentHealth: 50,
@@ -28,13 +28,13 @@ const pawns = {
             x: 700,
             y: 700
         },
-        speed: 1,
+        speed: 6,
         activations: 0,
         active: false,
         exhausted: false,
         inventory: {},
     },
-    2: {
+    b: {
         owner: 1,
         maxHealth: 50,
         currentHealth: 50,
@@ -48,7 +48,7 @@ const pawns = {
         exhausted: false,
         inventory: {},
     },
-    3: {
+    c: {
         owner: 0,
         maxHealth: 50,
         currentHealth: 50,
@@ -56,13 +56,13 @@ const pawns = {
             x: 800,
             y: 700
         },
-        speed: 20,
+        speed: 6,
         activations: 0,
         active: false,
         exhausted: false,
         inventory: {},
     },
-    4: {
+    d: {
         owner: 1,
         maxHealth: 50,
         currentHealth: 50,
