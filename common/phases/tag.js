@@ -11,9 +11,22 @@ export default {
             actions: 1,
         });
     },
-    onMove (G, ctx) {
+    onMove (G, ctx, { args: [ cardId ] }) {
+        const {
+            players: {
+                [ctx.currentPlayer]: {
+                    cards: playerHand,
+                }
+            }
+        } = G;
+        const {
+            [playerHand.indexOf(cardId)]: e,
+            ...cards
+        } = playerHand;
+
         return modifyPlayer(G, ctx.currentPlayer, {
             actions: 0,
+            cards: Object.values(cards),
         });
     },
     endPhaseIf (G, ctx) {
@@ -21,11 +34,12 @@ export default {
             players: {
                 [ctx.currentPlayer]: {
                     actions,
+                    cards,
                 },
             },
         } = G;
 
-        if (actions) {
+        if (actions && cards.length > 0) {
             return;
         }
 
