@@ -80,11 +80,24 @@ const pawns = {
     },
 };
 
+const cards = {
+    0: {
+        name: 'Card #1',
+    },
+    1: {
+        name: 'Card #2',
+    },
+    2: {
+        name: 'Card #3',
+    },
+};
+
 export default ({
     map = {},
 } = {}) => ({
     name: 'ascension',
     setup: () => ({
+        cards,
         players,
         pawns,
         map,
