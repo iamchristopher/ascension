@@ -1,15 +1,10 @@
-import * as MOVES from './constants/moves';
 import * as PHASES from './constants/phases';
 import * as ROLES from './constants/roles';
 import moves from './moves';
 import phases from './phases';
 import {
-    findActivePawn,
-    modifyPawn,
-    restorePawns
+    restorePawns,
 } from './util';
-
-const MAX_ACTIVATIONS = 2;
 
 const players = {
     0: {
@@ -86,17 +81,13 @@ const pawns = {
 };
 
 export default ({
-    map = [],
-    blocked = [],
-    interactions = []
+    map = {},
 } = {}) => ({
     name: 'ascension',
     setup: () => ({
         players,
         pawns,
         map,
-        blocked,
-        interactions
     }),
     moves,
     flow: {
