@@ -1,5 +1,6 @@
 import * as MOVES from './constants/moves';
 import * as PHASES from './constants/phases';
+import * as ROLES from './constants/roles';
 import moves from './moves';
 import phases from './phases';
 import {
@@ -12,10 +13,16 @@ const MAX_ACTIVATIONS = 2;
 
 const players = {
     0: {
-        name: 'One'
+        name: 'One',
+        role: ROLES.OVERLORD,
+        cards: [
+            1,
+            2,
+        ],
     },
     1: {
-        name: 'Two'
+        name: 'Two',
+        role: ROLES.HERO,
     }
 };
 
@@ -112,12 +119,28 @@ export default ({
             };
         },
         onTurnBegin (G, ctx) {
+            const {
+                players: {
+                    [ctx.currentPlayer]: {
+                        role,
+                    },
+                }
+            } = G;
+
+            let next = PHASES.OVERLORD;
+            if (role === ROLES.HERO) {
+                next = PHASES.HERO;
+            }
+
+            ctx.events.endPhase({
+                next,
+            });
+
             return {
                 ...G,
                 pawns: restorePawns(ctx.currentPlayer, G.pawns)
             };
         },
-        startingPhase: PHASES.RESTORATION,
         phases,
         optimisticUpdate: () => false
     }
