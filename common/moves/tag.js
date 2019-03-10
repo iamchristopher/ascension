@@ -1,4 +1,4 @@
-export default function (G, ctx, { x = 0, y = 0 }) {
+export default function (G, ctx, cardId, { x = 0, y = 0 }) {
     const tagX = Math.floor(x / 50);
     const tagY = Math.floor(y / 50);
     const roomId = G.map.rooms.findIndex(({ height, width, x, y, }) => (
@@ -15,10 +15,10 @@ export default function (G, ctx, { x = 0, y = 0 }) {
     const room = G.map.rooms[roomId];
     const xOffset = tagX - room.x;
     const yOffset = tagY - room.y;
-
     const tag = {
-        type: 'EFFECT_CARD',
+        source: cardId,
         owner: ctx.currentPlayer,
+        type: 'EFFECT_CARD',
     };
 
     const rooms = [
