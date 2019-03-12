@@ -12,6 +12,10 @@ export default {
         const pawnId = findActivePawn(G.pawns);
         const pawn = G.pawns[pawnId];
 
+        if (!pawn) {
+            return G;
+        }
+
         return modifyPawn(G, pawnId, {
             exhausted: pawn.activations >= MAX_ACTIVATIONS
         });
@@ -29,6 +33,10 @@ export default {
     endPhaseIf (G, ctx) {
         const pawnId = findActivePawn(G.pawns);
         const pawn = G.pawns[pawnId];
+
+        if (!pawn) {
+            return;
+        }
 
         if (pawn.exhausted) {
             return {

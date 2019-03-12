@@ -95,6 +95,17 @@ const cards = {
 export default ({
     map = {},
 } = {}) => ({
+    plugins: [
+        {
+            G: {
+                onPhaseBegin(G, ctx) {
+                    console.log('BEGIN PHASE:', ctx.phase);
+
+                    return G;
+                }
+            },
+        },
+    ],
     name: 'ascension',
     setup: () => ({
         cards,
@@ -105,6 +116,7 @@ export default ({
     moves,
     flow: {
         endGameIf (G, ctx) {
+            return;
             const validPlayerIds = Object.keys(G.players)
                 .filter(playerId =>
                     Object.keys(G.pawns)
