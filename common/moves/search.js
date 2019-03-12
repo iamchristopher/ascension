@@ -1,15 +1,12 @@
-import {
-    findActivePawn,
-    modifyPawn,
-} from '../util';
-
-import {
-    INVALID_MOVE
-} from 'boardgame.io/core';
 import Trekker from 'trekker';
 import {
     LootTable,
 } from 'lootastic';
+
+import {
+    findActivePawn,
+    modifyPawn,
+} from '../util';
 
 const lootTable = new LootTable([
     { chance: -1, result: 0 },
@@ -30,7 +27,7 @@ export default function (G, ctx, pos) {
         );
 
     if (pathToTarget.length > 1) {
-        return INVALID_MOVE;
+        return 'INVALID_MOVE';
     }
 
     const loot = lootTable
